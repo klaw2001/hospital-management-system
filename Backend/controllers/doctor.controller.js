@@ -16,6 +16,22 @@ export const getDoctors = async (req, res) => {
     });
   }
 };
+export const getSingleDoctor = async (req, res) => {
+  try {
+    const doctorID = req.params.doctor_id;
+    const doctorData = await doctorModel.findOne({_id:doctorID});
+    if (doctorData) {
+      return res.status(200).json({
+        data: doctorData,
+        msg: "Success",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      msg: error.msg,
+    });
+  }
+};
 
 export const addDoctor = (req, res) => {
   try {

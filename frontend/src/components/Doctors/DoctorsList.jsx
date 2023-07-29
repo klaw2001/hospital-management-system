@@ -3,13 +3,14 @@ import axios from "axios";
 import Container from "react-bootstrap/esm/Container";
 import { Link } from "react-router-dom";
 import SpinnerLoadComp from "../SpinnerComp/SpinnerLoadComp";
-const PatientList = () => {
-  const [patients, setPatients] = useState([]);
-  function getPatients() {
+
+const DoctorsList = () => {
+  const [doctors, setDoctors] = useState([]);
+  function getDoctors() {
     axios
-      .get("http://localhost:8000/patients/get-patients")
+      .get("http://localhost:8000/doctors/get-doctors")
       .then((res) => {
-        setPatients(res.data.data);
+        setDoctors(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -17,14 +18,14 @@ const PatientList = () => {
   }
 
   useEffect(() => {
-    getPatients();
+    getDoctors();
   }, []);
 
   const onDeleteHandler = (elemid) => {
     axios
-      .delete(`http://localhost:8000/patients/delete-patient/${elemid}`)
+      .delete(`http://localhost:8000/doctors/delete-doctor/${elemid}`)
       .then((res) => {
-        getPatients();
+        getDoctors();
       })
       .catch((err) => {
         console.log(err);
@@ -32,47 +33,40 @@ const PatientList = () => {
   };
   return (
     <>
-      {patients.length > 0 ? (
+      {doctors.length > 0 ? (
         <Container>
           <button className="btn btn-primary my-3">
             <Link
-              to={"/add-patient"}
+              to={"/add-doctor"}
               className="text-light text-decoration-none"
             >
-              Add User
+              Add Doctor
             </Link>
           </button>
-          <h1 className="text-start mb-3">Patients:</h1>
+          <h1 className="text-start mb-3">Doctors:</h1>
           <table className="table table-bordered">
             <thead>
               <tr>
                 <th>Sr. No</th>
                 <th>Name</th>
-                <th>Date of Birth</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Specialization</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {patients.map((elem, ind) => {
-                console.log(elem);
+              {doctors.map((elem, ind) => {
                 return (
                   <tr key={elem._id}>
                     <td>{++ind}</td>
                     <td>
                       {elem?.firstname} {elem?.lastname}
                     </td>
-                    <td>{new Date(elem?.dateofbirth).toLocaleDateString()}</td>
-                    <td>{elem?.gender}</td>
-                    <td>{elem?.email}</td>
-                    <td>{elem?.phone}</td>
+                    <td>{elem?.specialization}</td>
                     <td>
                       <button>
                         <Link
                           className="text-decoration-none text-dark"
-                          to={"/edit-user/" + elem?._id}
+                          to={"/edit-doctor/" + elem?._id}
                         >
                           Edit
                         </Link>
@@ -88,10 +82,10 @@ const PatientList = () => {
           </table>
         </Container>
       ) : (
-        <SpinnerLoadComp/>
+        <SpinnerLoadComp />
       )}
     </>
   );
 };
 
-export default PatientList;
+export default DoctorsList;

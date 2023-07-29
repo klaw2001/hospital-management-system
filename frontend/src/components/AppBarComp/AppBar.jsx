@@ -14,6 +14,8 @@ function AppBar() {
           <Nav className="me-auto">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/patients">Patients</NavLink>
+            <NavLink to="/medical-records">Medical Records</NavLink>
+            <NavLink to="/doctors">Doctors</NavLink>
           </Nav>
         </Navbar.Collapse>
       </Container>

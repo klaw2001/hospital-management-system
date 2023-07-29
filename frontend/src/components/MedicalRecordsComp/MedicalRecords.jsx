@@ -3,13 +3,13 @@ import axios from "axios";
 import Container from "react-bootstrap/esm/Container";
 import { Link } from "react-router-dom";
 import SpinnerLoadComp from "../SpinnerComp/SpinnerLoadComp";
-const PatientList = () => {
-  const [patients, setPatients] = useState([]);
-  function getPatients() {
+const MedicalRecords = () => {
+  const [records, setRecords] = useState([]);
+  function getRecords() {
     axios
-      .get("http://localhost:8000/patients/get-patients")
+      .get("http://localhost:8000/medical-records/get-records")
       .then((res) => {
-        setPatients(res.data.data);
+        setRecords(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -17,14 +17,14 @@ const PatientList = () => {
   }
 
   useEffect(() => {
-    getPatients();
+    getRecords();
   }, []);
 
   const onDeleteHandler = (elemid) => {
     axios
-      .delete(`http://localhost:8000/patients/delete-patient/${elemid}`)
+      .delete(`http://localhost:8000/medical-records/delete-record/${elemid}`)
       .then((res) => {
-        getPatients();
+        getRecords();
       })
       .catch((err) => {
         console.log(err);
@@ -32,42 +32,46 @@ const PatientList = () => {
   };
   return (
     <>
-      {patients.length > 0 ? (
+      {records.length > 0 ? (
         <Container>
           <button className="btn btn-primary my-3">
             <Link
-              to={"/add-patient"}
+              to={"/add-record"}
               className="text-light text-decoration-none"
             >
-              Add User
+              Add Record
             </Link>
           </button>
-          <h1 className="text-start mb-3">Patients:</h1>
+          <h1 className="text-start mb-3">Medical Records:</h1>
           <table className="table table-bordered">
             <thead>
               <tr>
                 <th>Sr. No</th>
-                <th>Name</th>
-                <th>Date of Birth</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Diagnosis</th>
+                <th>Prescription</th>
+                <th>Lab Test Results</th>
+                <th>Treatment History</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {patients.map((elem, ind) => {
+              {records.map((elem, ind) => {
                 console.log(elem);
                 return (
                   <tr key={elem._id}>
                     <td>{++ind}</td>
                     <td>
-                      {elem?.firstname} {elem?.lastname}
+                      {elem?.patients.firstname} {elem?.patients.lastname} 
                     </td>
-                    <td>{new Date(elem?.dateofbirth).toLocaleDateString()}</td>
-                    <td>{elem?.gender}</td>
-                    <td>{elem?.email}</td>
-                    <td>{elem?.phone}</td>
+                    <td>
+                      {elem?.doctors.firstname} {elem?.doctors.lastname} 
+                    </td>
+                    <td>{elem?.diagnosis}</td>
+                    <td>{elem?.prescription}</td>
+                    <td>{elem?.labtestresults}</td>
+                    <td>{elem?.treatmenthistory}</td>
                     <td>
                       <button>
                         <Link
@@ -94,4 +98,4 @@ const PatientList = () => {
   );
 };
 
-export default PatientList;
+export default MedicalRecords;

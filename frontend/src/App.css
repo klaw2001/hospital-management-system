@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -50,4 +51,13 @@
 }
 .navbar-nav a.active{
   color: #000000;
+}
+.spinner-container {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  height: 90vh; 
+}
+.login-row{
+  height: 100vh;
 }

@@ -6,11 +6,11 @@ const Schema = mongoose.Schema;
 const MedicalRecordScehma = new Schema({
   patientID: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
   },
   doctorID: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
   },
   diagnosis: {
     type: String,
