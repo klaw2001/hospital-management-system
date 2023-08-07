@@ -76,7 +76,7 @@ const MedicalRecords = () => {
                       <button>
                         <Link
                           className="text-decoration-none text-dark"
-                          to={"/edit-user/" + elem?._id}
+                          to={"/edit-record/" + elem?._id}
                         >
                           Edit
                         </Link>

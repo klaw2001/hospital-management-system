@@ -39,6 +39,23 @@ export const getRecords = async (req, res) => {
     });
   }
 };
+export const getSingleRecords = async (req, res) => {
+  try {
+    const medrecID = req.params.medicalrecord_id;
+    const recData = await medicalrecordModel.findOne({_id:medrecID})
+
+    if (recData) {
+      return res.status(200).json({
+        data: recData,
+        msg: "Success",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      msg: error.msg,
+    });
+  }
+};
 
 export const addRecords = (req, res) => {
   try {

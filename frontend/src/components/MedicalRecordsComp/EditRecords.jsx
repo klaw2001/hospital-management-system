@@ -2,12 +2,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Formik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddRecords = () => {
+const EditRecords = () => {
+    const {recordid} = useParams()
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
+const [record,setRecord] = useState({})
+
+useEffect(()=>{
+    axios.get(`http://localhost:8000/medical-records/get-single-record/${recordid}`)
+    .then((res)=>{
+        setRecord(res.data.data)
+    })
+    .catch((err) => {
+        console.log(err);
+      });
+},[recordid])
+
   function getPatients() {
     axios
       .get("http://localhost:8000/patients/get-patients")
@@ -43,15 +56,16 @@ const AddRecords = () => {
         <Row className="justify-content-center">
           <Col md={5}>
             <Card className="m-4 p-4">
-              <h3>Add Medical Record</h3>
+              <h3>Edit Medical Record</h3>
               <Formik
+              enableReinitialize={true}
                 initialValues={{
-                  patientID: "",
-                  doctorID: "",
-                  diagnosis: "",
-                  prescription: "",
-                  labtestresults: "",
-                  treatmenthistory: "",
+                  patientID: record?.patientID,
+                  doctorID: record?.doctorID,
+                  diagnosis: record?.diagnosis,
+                  prescription: record?.prescription,
+                  labtestresults: record?.labtestresults,
+                  treatmenthistory: record?.treatmenthistory,
                 }}
                 validate={(values) => {
                   const errors = {};
@@ -76,26 +90,26 @@ const AddRecords = () => {
 
                   return errors;
                 }}
-                onSubmit={async (values, { setSubmitting }) => {
+                onSubmit={ (values, { setSubmitting }) => {
                   
                   setTimeout(() => {
-                    const medicalRecordData = {
-                          patientID: values.patientID,
-                          doctorID: values.doctorID,
-                          diagnosis: values.diagnosis,
-                          prescription: values.prescription,
-                          labtestresults: values.labtestresults,
-                          treatmenthistory: values.treatmenthistory,
-                        };
+                    // const medicalRecordData = {
+                    //       patientID: values.patientID,
+                    //       doctorID: values.doctorID,
+                    //       diagnosis: values.diagnosis,
+                    //       prescription: values.prescription,
+                    //       labtestresults: values.labtestresults,
+                    //       treatmenthistory: values.treatmenthistory,
+                    //     };
                     // alert(JSON.stringify(values, null, 2));
-                    console.log(medicalRecordData)
+                    // console.log(medicalRecordData)
                     axios
-                      .post(
-                        "http://localhost:8000/medical-records/add-record",
-                        medicalRecordData
+                      .put(
+                        "http://localhost:8000/medical-records/update-record/" + recordid,
+                        values
                       )
                       .then((res) => {
-                        if (res.status == 201) {
+                        if (res.status == 200) {
                           navigate("/medical-records");
                         }
                       })
@@ -199,4 +213,4 @@ const AddRecords = () => {
   );
 };
 
-export default AddRecords;
+export default EditRecords;

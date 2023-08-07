@@ -14,6 +14,7 @@ import AddRecords from "./components/MedicalRecordsComp/AddRecords";
 import DoctorsList from "./components/Doctors/DoctorsList";
 import AddDoctor from "./components/Doctors/AddDoctor";
 import EditDoctor from "./components/Doctors/EditDoctor";
+import EditRecords from "./components/MedicalRecordsComp/EditRecords";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/edit-user/:patientid" element={<EditPatient />} />
               <Route path="/medical-records" element={<MedicalRecords />} />
               <Route path="/add-record" element={<AddRecords />} />
+              <Route path="/edit-record/:recordid" element={<EditRecords />} />
               <Route path="/doctors" element={<DoctorsList />} />
               <Route path="/add-doctor" element={<AddDoctor />} />
               <Route path="/edit-doctor/:doctorid" element={<EditDoctor />} />
